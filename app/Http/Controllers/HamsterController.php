@@ -16,6 +16,23 @@ class HamsterController extends Controller
     {
         //
         $hamsters = Hamster::all();
+
+        foreach ($hamsters as $hamster) {
+            $birthday = new DateTime($hamster->birthday);
+            $today = new DateTime();
+
+            // 日付の差を計算
+            $diff = $birthday->diff($today);
+
+            // 年齢と月数を取得
+            $ageYears = $diff->y;
+            $ageMonths = $diff->m;
+
+            $hamster->birthday = $ageYears . "歳 " . $ageMonths . "ヶ月";
+        }
+
+
+
         return response()->json(
             $hamsters
         );
@@ -30,10 +47,13 @@ class HamsterController extends Controller
         $hamster = new Hamster;
         $hamster->name = $request->name;
         $hamster->birthday = $request->birthday;
-        $hamster->save();
+        $res = $hamster->save();
 
-        return response()->json(['message' => 'ハムスターの登録が完了しました。'], 200);
-
+        if ($res) {
+            return response()->json(['message' => 'ハムスターの登録が完了しました。'], 200);
+        } else {
+            return response()->json(['message' => 'ハムスターの登録に失敗しました。'], 500);
+        }
     }
 
     /**
@@ -53,7 +73,6 @@ class HamsterController extends Controller
         $ageYears = $diff->y;
         $ageMonths = $diff->m;
 
-        // 結果を表示
 
         $hamster->birthday = $ageYears . "歳 " . $ageMonths . "ヶ月";
         return response()->json(

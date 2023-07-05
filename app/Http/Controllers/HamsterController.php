@@ -34,7 +34,8 @@ class HamsterController extends Controller
 
 
         return response()->json(
-            $hamsters
+            ['message' => 'データが正常に保存されました'],
+            200
         );
     }
 
@@ -45,8 +46,8 @@ class HamsterController extends Controller
     {
         //
         $hamster = new Hamster;
-        $hamster->name = $request->name;
-        $hamster->birthday = $request->birthday;
+
+        $hamster->fill($request->all());
         $res = $hamster->save();
 
         if ($res) {

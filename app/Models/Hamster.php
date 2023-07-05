@@ -10,6 +10,16 @@ class Hamster extends Model
     use HasFactory;
 
 
+    protected $fillable = [
+        'name',
+        'user_id',
+        'sex',
+        'type_id',
+        'photo',
+        'birthday',
+        'leaveday',
+        'introduce',
+    ];
 
 
 

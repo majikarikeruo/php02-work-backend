@@ -87,6 +87,17 @@ class HamsterController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $hamster = Hamster::find($id);
+        $hamster->fill($request->all());
+        $res = $hamster->save();
+
+        var_dump($hamster, $id, $res);
+
+        if ($res) {
+            return response()->json(['message' => 'ハムスターの更新が完了しました。'], 200);
+        } else {
+            return response()->json(['message' => 'ハムスターの更新に失敗しました。'], 500);
+        }
     }
 
     /**

@@ -64,18 +64,7 @@ class HamsterController extends Controller
     {
         //
         $hamster = Hamster::find($id);
-        $birthday = new DateTime($hamster->birthday);
-        $today = new DateTime();
 
-        // 日付の差を計算
-        $diff = $birthday->diff($today);
-
-        // 年齢と月数を取得
-        $ageYears = $diff->y;
-        $ageMonths = $diff->m;
-
-
-        $hamster->birthday = $ageYears . "歳 " . $ageMonths . "ヶ月";
         return response()->json(
             $hamster
         );
@@ -91,7 +80,6 @@ class HamsterController extends Controller
         $hamster->fill($request->all());
         $res = $hamster->save();
 
-        var_dump($hamster, $id, $res);
 
         if ($res) {
             return response()->json(['message' => 'ハムスターの更新が完了しました。'], 200);
@@ -106,5 +94,15 @@ class HamsterController extends Controller
     public function destroy(string $id)
     {
         //
+        $hamster = Hamster::find($id);
+        $res = $hamster->delete();
+
+
+
+        if ($res) {
+            return response()->json(['message' => 'ハムスターの削除が完了しました。'], 200);
+        } else {
+            return response()->json(['message' => 'ハムスターの削除に失敗しました。'], 500);
+        }
     }
 }
